@@ -73,3 +73,6 @@ target/
 
 .direnv
 .envrc
+
+# Project Files
+data/
