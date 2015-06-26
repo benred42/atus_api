@@ -3,7 +3,7 @@ from django.db import models
 
 class Respondent(models.Model):
     stat_wt = models.FloatField()
-    case_id = models.IntegerField()
+    case_id = models.BigIntegerField(primary_key=True)
 
     def __str__(self):
         return str(self.case_id)
