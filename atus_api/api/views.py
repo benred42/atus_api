@@ -1,8 +1,8 @@
 from api.models import Activity
 from api.serializers import ActivitySerializer
-from rest_framework import generics
+from rest_framework import viewsets
 
 
-class ActivityListView(generics.ListAPIView):
+class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Activity.objects.all()
-    serializer_class = ActivitySerializer()
+    serializer_class = ActivitySerializer
