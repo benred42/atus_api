@@ -24,7 +24,7 @@ Respondent:
 
 
 print("Converting activities...")
-users = []
+activities = []
 with open("data/atussum_2014.dat") as infile:
     reader = csv.reader(infile)
     rows = [row for row in reader]
@@ -35,13 +35,13 @@ with open("data/atussum_2014.dat") as infile:
     act_header = [code[1:] for code in act_header]  # Drop the leading t
 
     for activity_code in act_header:
-        users.append({"model": "api.Activity",
-                      "pk": activity_code,
-                      "fields": {
-                          "tier_1": activity_code[:2],
-                          "tier_2": activity_code[:4],
-                          "tier_3": activity_code
-                      }})
+        activities.append({"model": "api.Activity",
+                           "pk": activity_code,
+                           "fields": {
+                                      "tier_1": activity_code[:2],
+                                      "tier_2": activity_code[:4],
+                                      "tier_3": activity_code
+                                      }})
 
 with open("atus_api/fixtures/activities.json", "w") as outfile:
-    outfile.write(json.dumps(users))
+    outfile.write(json.dumps(activities))
