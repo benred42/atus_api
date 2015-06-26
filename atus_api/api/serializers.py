@@ -10,8 +10,7 @@ class ActivitySerializer(serializers.HyperlinkedModelSerializer):
     titles = SerializerMethodField()
 
     def get_titles(self, obj):
-        # code = self.code
-        code = '130228' # FIXME: Set this equal to the 6 digit code of instance
+        code = obj.tier_3
         titles =[atus.code_dict[i] for i in [code[0:2], code[0:4], code[0:6]]]
         return titles
 
