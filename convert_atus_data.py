@@ -68,22 +68,26 @@ with open("atus_api/fixtures/respondents.json", "w") as outfile:
 print("Converting events...")
 events = []
 event_pk_counter = 0
+respondent_counter = 0
 
 for row in rows[1:]:
-    case_id = row[0]
-    tuflwigt = row[1]
-    durations = row[24:]
-    activities = act_header
+    while event_pk_counter < 10000 or respondent_counter < 100:
+        respondent_counter += 1
+        case_id = row[0]
+        tuflwigt = row[1]
+        durations = row[24:]
+        activities = act_header
 
-    for i, duration in enumerate(durations):
-        events.append({"model": "api.Event",
-                        "pk": event_pk_counter,
-                       "fields": {
-                                  "respondent": case_id,
-                                  "activity": activities[i],
-                                  "duration": float(duration) * float(tuflwigt),
-                                  }})
-        event_pk_counter += 1
-        
-with open("atus_api/fixtures/events.json", "w") as outfile:
+
+        for i, duration in enumerate(durations):
+            events.append({"model": "api.Event",
+                            "pk": event_pk_counter,
+                           "fields": {
+                                      "respondent": case_id,
+                                      "activity": activities[i],
+                                      "duration": float(duration) * float(tuflwigt),
+                                      }})
+            event_pk_counter += 1
+
+with open("atus_api/fixtures/events-subset.json", "w") as outfile:
     outfile.write(json.dumps(events))
