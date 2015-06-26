@@ -39,15 +39,14 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 class RespondentSerializer(serializers.HyperlinkedModelSerializer):
     case_id = serializers.IntegerField(read_only=True)
     statistical_weight = serializers.IntegerField(source='stat_wt', read_only=True)
-    event_set = EventSerializer(many=True, read_only=True)
     _links = serializers.SerializerMethodField()
 
     class Meta:
         model = Respondent
-        fields = ('case_id', 'statistical_weight', 'event_set', '_links')
+        fields = ('url', 'case_id', 'statistical_weight', '_links')
 
     def get__links(self, obj):
         links = {
-            "activity_totals": reverse('event_list', kwargs=dict(request_id=obj.case_id),
+            "activity_totals": reverse('event_list', kwargs=dict(respondent_id=obj.case_id),
                                        request=self.context.get('request'))}
         return links
