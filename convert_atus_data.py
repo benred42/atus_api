@@ -95,7 +95,7 @@ event_pk_counter = 0
 respondent_counter = 0
 
 for row in rows[1:]:
-    while event_pk_counter < 10000 or respondent_counter < 100:
+    if event_pk_counter < 10000 or respondent_counter < 100:
         respondent_counter += 1
         case_id = row[0]
         tuflwigt = row[1]
