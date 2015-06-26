@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from api.models import Activity
+from api.serializers import ActivitySerializer
+from rest_framework import generics
 
-# Create your views here.
+
+class ActivityListView(generics.ListAPIView):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer()
