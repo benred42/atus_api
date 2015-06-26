@@ -1,7 +1,9 @@
 from rest_framework.fields import SerializerMethodField
-from api.models import Activity, Respondent
+from api.models import Activity, Respondent, Event
 from rest_framework import serializers
 import api.code_list as atus
+from rest_framework.reverse import reverse
+
 
 class ActivitySerializer(serializers.HyperlinkedModelSerializer):
     code = serializers.PrimaryKeyRelatedField(source='tier_3', read_only=True)
@@ -18,12 +20,34 @@ class ActivitySerializer(serializers.HyperlinkedModelSerializer):
         model = Activity
         fields = ('url', 'code', 'average_minutes', 'total_respondents', 'titles')
 
+
+#######################################################################################################################
+
+class EventSerializer(serializers.HyperlinkedModelSerializer):
+    activity_total = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Event
+        fields = ('activity_total',)
+
+    def get_activity_total(self, obj):
+        return {obj.activity.tier_3: obj.duration}
+
+
 #######################################################################################################################
 
 class RespondentSerializer(serializers.HyperlinkedModelSerializer):
     case_id = serializers.IntegerField(read_only=True)
     statistical_weight = serializers.IntegerField(source='stat_wt', read_only=True)
+    event_set = EventSerializer(many=True, read_only=True)
+    _links = serializers.SerializerMethodField()
 
     class Meta:
         model = Respondent
-        fields = ('case_id', 'statistical_weight')
+        fields = ('case_id', 'statistical_weight', 'event_set', '_links')
+
+    def get__links(self, obj):
+        links = {
+            "activity_totals": reverse('event_list', kwargs=dict(request_id=obj.case_id),
+                                       request=self.context.get('request'))}
+        return links
