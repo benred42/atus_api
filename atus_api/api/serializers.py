@@ -16,7 +16,7 @@ class ActivitySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Activity
-        fields = ('code', 'average_minutes', 'total_respondents', 'titles')
+        fields = ('url', 'code', 'average_minutes', 'total_respondents', 'titles')
 
 #######################################################################################################################
 

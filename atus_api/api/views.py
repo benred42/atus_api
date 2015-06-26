@@ -16,3 +16,4 @@ class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
 class RespondentsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Respondent.objects.all()
     serializer_class = RespondentSerializer
+
