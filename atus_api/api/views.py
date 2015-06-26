@@ -24,7 +24,7 @@ class EventView(generics.ListAPIView):
 
     def get_queryset(self):
         self.total_weight = Respondent.objects.all().aggregate(Sum('stat_wt'))['stat_wt__sum']
-        queryset = Event.objects.all()
+        queryset = Event.objects.all().filter(respondent__case_id=self.kwargs['respondent_id'])
         return queryset
 
     def get_serializer_context(self):
