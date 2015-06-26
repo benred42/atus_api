@@ -20,5 +20,20 @@ class RespondentsViewSet(viewsets.ReadOnlyModelViewSet):
 #######################################################################################################################
 
 class EventView(generics.ListAPIView):
-    queryset = Event.objects.all()
     serializer_class = EventSerializer
+
+    def get_queryset(self):
+        self.total_weight = Respondent.objects.all().aggregate(Sum('stat_wt'))['stat_wt__sum']
+        queryset = Event.objects.all()
+        return queryset
+
+    def get_serializer_context(self):
+        """
+        Extra context provided to the serializer class.
+        """
+        return {
+            'request': self.request,
+            'format': self.format_kwarg,
+            'view': self,
+            'total_weight': self.total_weight
+        }
