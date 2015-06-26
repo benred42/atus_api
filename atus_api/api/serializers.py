@@ -43,7 +43,7 @@ class RespondentSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Respondent
-        fields = ('url', 'case_id', 'statistical_weight', '_links')
+        # fields = ('url', 'case_id', 'statistical_weight', '_links')
 
     def get__links(self, obj):
         links = {
