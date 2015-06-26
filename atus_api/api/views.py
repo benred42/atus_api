@@ -1,7 +1,7 @@
-from api.models import Activity, Respondent
-from api.serializers import ActivitySerializer, RespondentSerializer
+from api.models import Activity, Respondent, Event
+from api.serializers import ActivitySerializer, RespondentSerializer, EventSerializer
 from django.db.models import Sum, Count
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 
 
 class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
@@ -17,3 +17,8 @@ class RespondentsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Respondent.objects.all()
     serializer_class = RespondentSerializer
 
+#######################################################################################################################
+
+class EventView(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer

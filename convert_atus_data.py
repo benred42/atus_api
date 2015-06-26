@@ -53,7 +53,7 @@ print("Converting respondents...")
 demographic_data = [row[0:2] for row in rows[1:]]
 
 respondents = []
-for row in demographic_data:
+for row in demographic_data[:100]:
     respondents.append({"model": "api.Respondent",
                         "pk": row[0],
                         "fields": {
