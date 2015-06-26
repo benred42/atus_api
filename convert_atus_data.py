@@ -21,7 +21,9 @@ Respondent:
 """
 
 
-
+rows = []
+header = []
+act_header = []
 
 print("Converting activities...")
 activities = []
@@ -53,7 +55,7 @@ demographic_data = [row[0:2] for row in rows[1:]]
 respondents = []
 for row in demographic_data:
     respondents.append({"model": "api.Respondent",
-                        "pk": row[0][4:],
+                        "pk": row[0],
                         "fields": {
                                    "case_id": row[0],
                                    "stat_wt": row[1],
@@ -61,3 +63,27 @@ for row in demographic_data:
 
 with open("atus_api/fixtures/respondents.json", "w") as outfile:
     outfile.write(json.dumps(respondents))
+
+
+print("Converting events...")
+events = []
+event_pk_counter = 0
+
+for row in rows[1:]:
+    case_id = row[0]
+    tuflwigt = row[1]
+    durations = row[24:]
+    activities = act_header
+
+    for i, duration in enumerate(durations):
+        events.append({"model": "api.Event",
+                        "pk": event_pk_counter,
+                       "fields": {
+                                  "respondent": case_id,
+                                  "activity": activities[i],
+                                  "duration": float(duration) * float(tuflwigt),
+                                  }})
+        event_pk_counter += 1
+        
+with open("atus_api/fixtures/events.json", "w") as outfile:
+    outfile.write(json.dumps(events))
