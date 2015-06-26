@@ -4,7 +4,7 @@ import os
 DEBUG = False
 SECRET_KEY = os.environ['SECRET_KEY']
 
-BLACKLIST = ['debugtoolbar', 'django_extensions']
+BLACKLIST = ['debug_toolbar', 'django_extensions']
 INSTALLED_APPS = tuple([app for app in INSTALLED_APPS if app not in BLACKLIST])
 
 # Parse database configuration from $DATABASE_URL
