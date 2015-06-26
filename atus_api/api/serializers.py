@@ -11,7 +11,7 @@ class ActivitySerializer(serializers.HyperlinkedModelSerializer):
 
     def get_titles(self, obj):
         code = obj.tier_3
-        titles =[atus.code_dict[i] for i in [code[0:2], code[0:4], code[0:6]]]
+        titles = [atus.code_dict[i] for i in [code[0:2], code[0:4], code[0:6]]]
         return titles
 
     class Meta:

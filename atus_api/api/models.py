@@ -23,3 +23,6 @@ class Event(models.Model):
     activity = models.ForeignKey(Activity)
     respondent = models.ForeignKey(Respondent)
     duration = models.FloatField()
+
+    def __str__(self):
+        return "{}: {}".format(self.respondent.case_id, self.activity.tier_3)
