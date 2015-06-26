@@ -43,6 +43,8 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'django_filters',
 
+    'api',
+
 )
 
 MIDDLEWARE_CLASSES = (
