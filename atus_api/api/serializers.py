@@ -24,13 +24,13 @@ class ActivitySerializer(serializers.HyperlinkedModelSerializer):
 #######################################################################################################################
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
-    activity_total = serializers.SerializerMethodField()
+    activity_time = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
-        fields = ('activity_total',)
+        fields = ('activity_time',)
 
-    def get_activity_total(self, obj):
+    def get_activity_time(self, obj):
         return {obj.activity.tier_3: (obj.duration/self.context.get('total_weight'))}
 
 
