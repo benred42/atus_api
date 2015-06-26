@@ -50,16 +50,40 @@ with open("atus_api/fixtures/activities.json", "w") as outfile:
 
 
 print("Converting respondents...")
-demographic_data = [row[0:2] for row in rows[1:]]
-
+demographic_data = [row[0:24] for row in rows[1:]]
+demographic_titles =    ['case_id',
+                         'stat_wt',
+                         'youngest_child_age',
+                         'age_edited',
+                         'gender',
+                         'education_level',
+                         'race',
+                         'is_hispanic',
+                         'metropolitan_status',
+                         'employment_status',
+                         'has_multiple_jobs',
+                         'work_status',
+                         'is_student',
+                         'school_level',
+                         'partner_present',
+                         'partner_employed',
+                         'weekly_earnings_main',
+                         'household_children',
+                         'partner_work_status',
+                         'weekly_hours_worked',
+                         'date',
+                         'is_holiday',
+                         'eldercare_minutes',
+                         'childcare_minutes']
 respondents = []
+
 for row in demographic_data[:100]:
+    fields_dict = {title: row[i] for (i,title) in enumerate(demographic_titles)}
+
     respondents.append({"model": "api.Respondent",
                         "pk": row[0],
-                        "fields": {
-                                   "case_id": row[0],
-                                   "stat_wt": row[1],
-                                   }})
+                        "fields": fields_dict,
+                        })
 
 with open("atus_api/fixtures/respondents.json", "w") as outfile:
     outfile.write(json.dumps(respondents))
