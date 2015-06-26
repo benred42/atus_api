@@ -45,3 +45,19 @@ with open("data/atussum_2014.dat") as infile:
 
 with open("atus_api/fixtures/activities.json", "w") as outfile:
     outfile.write(json.dumps(activities))
+
+
+print("Converting respondents...")
+demographic_data = [row[0:2] for row in rows[1:]]
+
+respondents = []
+for row in demographic_data:
+    respondents.append({"model": "api.Respondent",
+                        "pk": row[0][4:],
+                        "fields": {
+                                   "case_id": row[0],
+                                   "stat_wt": row[1],
+                                   }})
+
+with open("atus_api/fixtures/respondents.json", "w") as outfile:
+    outfile.write(json.dumps(respondents))
