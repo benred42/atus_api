@@ -38,12 +38,37 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 
 class RespondentSerializer(serializers.HyperlinkedModelSerializer):
     case_id = serializers.IntegerField(read_only=True)
-    statistical_weight = serializers.IntegerField(source='stat_wt', read_only=True)
+    stat_wt = serializers.IntegerField(read_only=True)
     _links = serializers.SerializerMethodField()
 
     class Meta:
         model = Respondent
-        fields = ('url', 'case_id', 'statistical_weight', '_links')
+        fields = ('case_id',
+                  'url',
+                  'stat_wt',
+                  'youngest_child_age',
+                  'age_edited',
+                  'gender',
+                  'education_level',
+                  'race',
+                  'is_hispanic',
+                  'metropolitan_status',
+                  'employment_status',
+                  'has_multiple_jobs',
+                  'work_status',
+                  'is_student',
+                  'school_level',
+                  'partner_present',
+                  'partner_employed',
+                  'weekly_earnings_main',
+                  'household_children',
+                  'partner_work_status',
+                  'weekly_hours_worked',
+                  'date',
+                  'is_holiday',
+                  'eldercare_minutes',
+                  'childcare_minutes',
+                  '_links')
 
     def get__links(self, obj):
         links = {
