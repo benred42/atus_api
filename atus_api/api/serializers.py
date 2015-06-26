@@ -1,4 +1,4 @@
-from api.models import Activity
+from api.models import Activity, Respondent
 from rest_framework import serializers
 
 
@@ -11,3 +11,12 @@ class ActivitySerializer(serializers.HyperlinkedModelSerializer):
         model = Activity
         fields = ('code', 'average_minutes', 'total_respondents')
 
+#######################################################################################################################
+
+class RespondentSerializer(serializers.HyperlinkedModelSerializer):
+    case_id = serializers.IntegerField(read_only=True)
+    statistical_weight = serializers.IntegerField(source='stat_wt', read_only=True)
+
+    class Meta:
+        model = Respondent
+        fields = ('case_id', 'statistical_weight')
