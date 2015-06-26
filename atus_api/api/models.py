@@ -6,13 +6,14 @@ class Respondent(models.Model):
     case_id = models.IntegerField()
 
     def __str__(self):
-        return self.case_id
+        return str(self.case_id)
 
 
 class Activity(models.Model):
     tier_1 = models.CharField(max_length=2)
     tier_2 = models.CharField(max_length=4)
     tier_3 = models.CharField(max_length=6)
+    respondents = models.ManyToManyField(Respondent, through='Event')
 
     def __str__(self):
         return self.tier_3
