@@ -31,7 +31,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('activity_total',)
 
     def get_activity_total(self, obj):
-        return {obj.activity.tier_3: obj.duration}
+        return {obj.activity.tier_3: (obj.duration/self.context.get('total_weight'))}
 
 
 #######################################################################################################################
