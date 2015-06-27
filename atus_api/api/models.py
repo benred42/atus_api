@@ -32,19 +32,17 @@ def __str__(self):
 
 
 class Activity(models.Model):
-    tier_1 = models.CharField(max_length=2)
-    tier_2 = models.CharField(max_length=4)
-    tier_3 = models.CharField(max_length=6)
-    respondents = models.ManyToManyField(Respondent, through='Event')
+    code = models.CharField(max_length=6)
+    # respondents = models.ManyToManyField(Respondent, through='Event')
 
     def __str__(self):
-        return self.tier_3
+        return self.code
 
 
 class Event(models.Model):
-    activity = models.ForeignKey(Activity)
+    activity = models.ManyToManyField(Activity)
     respondent = models.ForeignKey(Respondent)
     duration = models.FloatField()
 
     def __str__(self):
-        return "{}: {}".format(self.respondent.case_id, self.activity.tier_3)
+        return "{}: {}".format(self.respondent.case_id, self.activity)

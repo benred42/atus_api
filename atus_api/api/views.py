@@ -7,8 +7,8 @@ from rest_framework import viewsets, generics
 class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Activity.objects.all().annotate(
         weighted_average=(
-            Sum('event__duration') / Sum('respondents__stat_wt'))).annotate(
-        num_respondents=Count('respondents'))
+            Sum('event__duration') / Sum('event__respondent__stat_wt'))).annotate(
+        num_respondents=Count('event__respondent'))
     serializer_class = ActivitySerializer
 
 #######################################################################################################################
