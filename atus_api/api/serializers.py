@@ -6,14 +6,19 @@ from rest_framework.reverse import reverse
 
 
 class ActivitySerializer(serializers.HyperlinkedModelSerializer):
-    code = serializers.PrimaryKeyRelatedField(source='tier_3', read_only=True)
+    code = serializers.PrimaryKeyRelatedField(read_only=True)
     average_minutes = serializers.FloatField(read_only=True, source='weighted_average')
     total_respondents = serializers.IntegerField(read_only=True, source='num_respondents')
     titles = SerializerMethodField()
 
     def get_titles(self, obj):
-        code = obj.tier_3
-        titles = [atus.code_dict[i] for i in [code[0:2], code[0:4], code[0:6]]]
+        code = obj.code
+        if len(obj.code) == 6:
+            titles = [atus.code_dict[i] for i in [code[0:2], code[0:4], code[0:6]]]
+        elif len(obj.code) == 4:
+            titles = [atus.code_dict[i] for i in [code[0:2], code[0:4]]]
+        else:
+            titles = [atus.code_dict[code]]
         return titles
 
     class Meta:
@@ -31,7 +36,8 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('activity_time',)
 
     def get_activity_time(self, obj):
-        return {obj.activity.tier_3: (obj.duration/self.context.get('total_weight'))}
+        code = sorted([activity.code for activity in obj.activity.all()])[-1]
+        return {code: (obj.duration/self.context.get('total_weight'))}
 
 
 #######################################################################################################################
