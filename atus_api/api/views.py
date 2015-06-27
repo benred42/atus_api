@@ -8,7 +8,7 @@ class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Activity.objects.all().annotate(
         weighted_average=(
             Sum('event__duration') / Sum('event__respondent__stat_wt'))).annotate(
-        num_respondents=Count('event__respondent'))
+        num_respondents=Count('event__respondent', distinct=True))
     serializer_class = ActivitySerializer
 
 #######################################################################################################################
