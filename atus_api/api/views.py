@@ -11,10 +11,11 @@ class ActivityFilter(django_filters.FilterSet):
     age__lte = django_filters.NumberFilter(name="event__respondent__age_edited", lookup_type="lte", distinct=True)
     age__gt = django_filters.NumberFilter(name="event__respondent__age_edited", lookup_type="gt", distinct=True)
     age__lt = django_filters.NumberFilter(name="event__respondent__age_edited", lookup_type="lt", distinct=True)
+    age = django_filters.RangeFilter(name="event__respondent__age_edited", distinct=True)
 
     class Meta:
         model = Activity
-        fields = ['code', 'age__gte', 'age__lte', 'age__gt', 'age__lt']
+        fields = ['code', 'age__gte', 'age__lte', 'age__gt', 'age__lt', 'age']
 
 
 #######################################################################################################################

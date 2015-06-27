@@ -10,6 +10,7 @@ class ActivitySerializer(serializers.HyperlinkedModelSerializer):
     average_minutes = serializers.FloatField(read_only=True, source='weighted_average')
     total_respondents = serializers.IntegerField(read_only=True, source='num_respondents')
     titles = SerializerMethodField()
+    filters = SerializerMethodField()
 
     def get_titles(self, obj):
         code = obj.code
@@ -21,9 +22,13 @@ class ActivitySerializer(serializers.HyperlinkedModelSerializer):
             titles = [atus.code_dict[code]]
         return titles
 
+    def get_filters(self, obj):
+        filters = {key: value for key, value in self.context.get('request').GET.items()}
+        return filters
+
     class Meta:
         model = Activity
-        fields = ('url', 'code', 'average_minutes', 'total_respondents', 'titles')
+        fields = ('url', 'code', 'average_minutes', 'total_respondents', 'titles', 'filters')
 
 
 #######################################################################################################################
