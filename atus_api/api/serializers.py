@@ -23,7 +23,7 @@ class ActivitySerializer(serializers.HyperlinkedModelSerializer):
         return titles
 
     def get_filters(self, obj):
-        filters = {key: value for key, value in self.context.get('request').GET.items()}
+        filters = {key: value for key, value in self.context.get('request').GET.items() if key != 'page'}
         return filters
 
     class Meta:
