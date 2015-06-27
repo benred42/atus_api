@@ -5,7 +5,7 @@ class Respondent(models.Model):
     stat_wt = models.FloatField()
     case_id = models.BigIntegerField(primary_key=True)
     youngest_child_age = models.IntegerField(default=0)
-    age_edited = models.IntegerField(default=0)
+    age_edited = models.IntegerField(default=0, db_index=True)
     gender = models.IntegerField(default=0)
     education_level = models.IntegerField(default=0)
     race = models.IntegerField(default=0)
