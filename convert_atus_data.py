@@ -1,23 +1,6 @@
 import csv
 import json
 
-"""
-Models:
-Activity:
-    tier_1: 01
-    tier_2: 0101
-    tier_3: 010101
-
-Event:
-    id
-    activity FK
-    duration
-    respondent FK
-
-Respondent:
-    stat_wt
-    case_id PK
-"""
 
 rows = []
 header = []
