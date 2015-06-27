@@ -7,16 +7,14 @@ import django_filters
 
 class ActivityFilter(django_filters.FilterSet):
     code = django_filters.CharFilter(name="code", lookup_type="startswith")
-    age__gte = django_filters.NumberFilter(name="event__respondent__age_edited", lookup_type="gte", distinct=True)
-    age__lte = django_filters.NumberFilter(name="event__respondent__age_edited", lookup_type="lte", distinct=True)
     age__gt = django_filters.NumberFilter(name="event__respondent__age_edited", lookup_type="gt", distinct=True)
     age__lt = django_filters.NumberFilter(name="event__respondent__age_edited", lookup_type="lt", distinct=True)
     age = django_filters.RangeFilter(name="event__respondent__age_edited", distinct=True)
+    work_status = django_filters.NumberFilter(name="event__respondent__work_status", lookup_type='exact', distinct=True)
 
     class Meta:
         model = Activity
-        fields = ['code', 'age__gte', 'age__lte', 'age__gt', 'age__lt', 'age']
-
+        fields = ['code', 'age__gt', 'age__lt', 'age', 'work_status']
 
 #######################################################################################################################
 

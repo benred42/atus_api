@@ -13,7 +13,7 @@ class Respondent(models.Model):
     metropolitan_status = models.IntegerField(default=0)
     employment_status = models.IntegerField(default=0)
     has_multiple_jobs = models.IntegerField(default=0)
-    work_status = models.IntegerField(default=0)
+    work_status = models.IntegerField(default=0, db_index=True)
     is_student = models.IntegerField(default=0)
     school_level = models.IntegerField(default=0)
     partner_present = models.IntegerField(default=0)
