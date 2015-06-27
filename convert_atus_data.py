@@ -1,6 +1,7 @@
 import csv
 import json
 
+RESPONDENT_SUBSET_SIZE = 100
 
 rows = []
 header = []
@@ -67,7 +68,7 @@ demographic_titles = ['case_id',
                       'childcare_minutes']
 respondents = []
 
-for row in demographic_data[:100]:
+for row in demographic_data[:RESPONDENT_SUBSET_SIZE]:
     fields_dict = {title: row[i] for (i, title) in enumerate(demographic_titles)}
 
     respondents.append({"model": "api.Respondent",
@@ -84,7 +85,7 @@ event_pk_counter = 0
 respondent_counter = 0
 
 for row in rows[1:]:
-    if event_pk_counter < 10000 or respondent_counter < 100:
+    if respondent_counter < RESPONDENT_SUBSET_SIZE:
         respondent_counter += 1
         case_id = row[0]
         tuflwigt = row[1]
@@ -118,7 +119,7 @@ with open("data/atusrost_2014.dat") as infile:
     for row in rows[1:]:
         if int(row[1]) == 1:
             unique_case_ids += 1
-        if unique_case_ids <= 100:
+        if unique_case_ids <= RESPONDENT_SUBSET_SIZE:
             hhmembers.append({"model": "api.HouseholdMember",
                               "pk": hhmember_pk_counter,
                               "fields": {
@@ -132,6 +133,6 @@ with open("data/atusrost_2014.dat") as infile:
                                   "gender_flag": row[7],
                               }})
             hhmember_pk_counter += 1
-            
+
 with open("atus_api/fixtures/hhmembers.json", "w") as outfile:
     outfile.write(json.dumps(hhmembers))
