@@ -5,9 +5,10 @@ from rest_framework import viewsets, generics
 
 
 class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
+    total_weight = Respondent.objects.all().aggregate(Sum('stat_wt'))['stat_wt__sum']
     queryset = Activity.objects.all().annotate(
         weighted_average=(
-            Sum('event__duration') / Sum('event__respondent__stat_wt'))).annotate(
+            Sum('event__duration') / total_weight)).annotate(
         num_respondents=Count('event__respondent', distinct=True))
     serializer_class = ActivitySerializer
 
