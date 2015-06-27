@@ -103,3 +103,35 @@ for row in rows[1:]:
 
 with open("atus_api/fixtures/events-subset.json", "w") as outfile:
     outfile.write(json.dumps(events))
+
+
+print("Converting hhmembers...")
+with open("data/atusrost_2014.dat") as infile:
+    reader = csv.reader(infile)
+    rows = [row for row in reader]
+    header = rows[0]
+
+    hhmembers = []
+    unique_case_ids = 0
+    hhmember_pk_counter = 0
+
+    for row in rows[1:]:
+        if int(row[1]) == 1:
+            unique_case_ids += 1
+        if unique_case_ids <= 100:
+            hhmembers.append({"model": "api.HouseholdMember",
+                              "pk": hhmember_pk_counter,
+                              "fields": {
+                                  "case_id": row[0],
+                                  "hhmember_id": row[1],
+                                  "age_edited": row[2],
+                                  "relationship": row[3],
+                                  "gender": row[4],
+                                  "age_flag": row[5],
+                                  "relationship_flag": row[6],
+                                  "gender_flag": row[7],
+                              }})
+            hhmember_pk_counter += 1
+            
+with open("atus_api/fixtures/hhmembers.json", "w") as outfile:
+    outfile.write(json.dumps(hhmembers))
