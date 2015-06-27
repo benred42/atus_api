@@ -1,7 +1,18 @@
 from api.models import Activity, Respondent, Event
 from api.serializers import ActivitySerializer, RespondentSerializer, EventSerializer
 from django.db.models import Sum, Count
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, filters
+import django_filters
+
+
+class ActivityFilter(django_filters.FilterSet):
+    code = django_filters.CharFilter(name="code", lookup_type="startswith")
+
+    class Meta:
+        model = Activity
+        fields = ['code']
+
+#######################################################################################################################
 
 
 class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
@@ -11,6 +22,8 @@ class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
             Sum('event__duration') / total_weight)).annotate(
         num_respondents=Count('event__respondent', distinct=True))
     serializer_class = ActivitySerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_class = ActivityFilter
 
 #######################################################################################################################
 
