@@ -1,5 +1,6 @@
-from api.models import Activity, Respondent, Event
-from api.serializers import ActivitySerializer, RespondentSerializer, EventSerializer
+from api.models import Activity, Respondent, Event, HouseholdMember
+from api.serializers import ActivitySerializer, RespondentSerializer, \
+    EventSerializer, HouseholdMemberSerializer
 from django.db.models import Sum, Count
 from rest_framework import viewsets, generics, filters
 import django_filters
@@ -7,10 +8,15 @@ import django_filters
 
 class ActivityFilter(django_filters.FilterSet):
     code = django_filters.CharFilter(name="code", lookup_type="startswith")
-    age__gt = django_filters.NumberFilter(name="event__respondent__age_edited", lookup_type="gt", distinct=True)
-    age__lt = django_filters.NumberFilter(name="event__respondent__age_edited", lookup_type="lt", distinct=True)
-    age = django_filters.RangeFilter(name="event__respondent__age_edited", distinct=True)
-    work_status = django_filters.NumberFilter(name="event__respondent__work_status", lookup_type='exact', distinct=True)
+    age__gt = django_filters.NumberFilter(name="event__respondent__age_edited",
+                                          lookup_type="gt", distinct=True)
+    age__lt = django_filters.NumberFilter(name="event__respondent__age_edited",
+                                          lookup_type="lt", distinct=True)
+    age = django_filters.RangeFilter(name="event__respondent__age_edited",
+                                     distinct=True)
+    work_status = django_filters.NumberFilter(
+        name="event__respondent__work_status", lookup_type='exact',
+        distinct=True)
 
     class Meta:
         model = Activity
@@ -61,8 +67,10 @@ class EventView(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        self.total_weight = Respondent.objects.all().aggregate(Sum('stat_wt'))['stat_wt__sum']
-        queryset = Event.objects.all().filter(respondent__case_id=self.kwargs['respondent_id'])
+        self.total_weight = Respondent.objects.all().aggregate(Sum('stat_wt'))[
+            'stat_wt__sum']
+        queryset = Event.objects.all().filter(
+            respondent__case_id=self.kwargs['respondent_id'])
         return queryset
 
     def get_serializer_context(self):
@@ -75,3 +83,26 @@ class EventView(generics.ListAPIView):
             'view': self,
             'total_weight': self.total_weight
         }
+
+
+#######################################################################################################################
+
+class HouseholdMemberView(generics.ListAPIView):
+    serializer_class = HouseholdMemberSerializer
+
+    def get_queryset(self):
+        queryset = HouseholdMember.objects.all().filter(
+            respondent__case_id=self.kwargs['respondent_id'])
+        return queryset
+
+    def get_serializer_context(self):
+        """
+        Extra context provided to the serializer class.
+        """
+        return {
+            'request': self.request,
+            'format': self.format_kwarg,
+            'view': self,
+        }
+
+

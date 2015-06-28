@@ -25,5 +25,6 @@ router.register(r'respondents', views.RespondentsViewSet)
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include(router.urls)),
-    url(r'^respondents/(?P<respondent_id>\d+)/events', views.EventView.as_view(), name="event_list")
+    url(r'^respondents/(?P<respondent_id>\d+)/events', views.EventView.as_view(), name="event_list"),
+    url(r'^respondents/(?P<respondent_id>\d+)/hhmembers', views.HouseholdMemberView.as_view(), name="hhmembers_list"),
 ]

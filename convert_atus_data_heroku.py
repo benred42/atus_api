@@ -1,8 +1,8 @@
 import csv
 import json
 
-RESPONDENT_SUBSET_SIZE = 100
-FIXTURE_DIR = 'atus_api/fixtures/'
+RESPONDENT_SUBSET_SIZE = 20
+FIXTURE_DIR = 'atus_api/heroku_fixtures/'
 
 rows = []
 header = []

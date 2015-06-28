@@ -59,7 +59,7 @@ Use [django-filter](https://django-filter.readthedocs.org/en/latest/) and
 to allow for filtering this down from all respondents to a subset. django-filter
 allows for many lookup types. If I wanted to see how many minutes employed
 people between the ages of 30 and 40 slept on average, I could craft a URL like
-`/activities/01/?age__gte=30&age__lt=40&labor_force_status=1` and get a result
+`/activities/0101/?age__gte=30&age__lt=40&labor_force_status=1` and get a result
 like:
 
 ```json
