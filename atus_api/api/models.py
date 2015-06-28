@@ -28,8 +28,8 @@ class Respondent(models.Model):
     childcare_minutes = models.IntegerField(default=0)
 
 
-def __str__(self):
-    return str(self.case_id)
+    def __str__(self):
+        return str(self.case_id)
 
 
 class HouseholdMember(models.Model):
@@ -42,6 +42,8 @@ class HouseholdMember(models.Model):
     relationship_flag = models.IntegerField()
     gender_flag = models.IntegerField()
 
+    def __str__(self):
+        return str(self.case_id) + '-' + str(self.hhmember_id)
 
 class Activity(models.Model):
     code = models.CharField(max_length=6)
