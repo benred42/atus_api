@@ -124,7 +124,7 @@ with open("data/atusrost_2014.dat") as infile:
             hhmembers.append({"model": "api.HouseholdMember",
                               "pk": hhmember_pk_counter,
                               "fields": {
-                                  "case_id": row[0],
+                                  "respondent": row[0],
                                   "hhmember_id": row[1],
                                   "age_edited": row[2],
                                   "relationship": row[3],
