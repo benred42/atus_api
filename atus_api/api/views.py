@@ -27,7 +27,6 @@ class ActivityFilter(django_filters.FilterSet):
 
 
 class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
-    # total_weight = Respondent.objects.all().aggregate(Sum('stat_wt'))['stat_wt__sum']
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
     filter_backends = (filters.DjangoFilterBackend,)
@@ -42,14 +41,14 @@ class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
         method if you want to apply the configured filtering backend to the
         default queryset.
         """
+        # total_weight = Respondent.objects.all().aggregate(Sum('stat_wt'))['stat_wt__sum']
+
         for backend in list(self.filter_backends):
-            total_weight = Respondent.objects.all().aggregate(Sum('stat_wt'))[
-                'stat_wt__sum']
             queryset = backend().filter_queryset(self.request, queryset, self)
-            queryset = queryset.annotate(
-                weighted_average=(
-                    Sum('event__duration') / total_weight)).annotate(
-                num_respondents=Count('event__respondent', distinct=True))
+
+        queryset = queryset.annotate(
+            weighted_average=((Sum('event__duration')) / Sum('event__respondent__stat_wt'))).annotate(
+            num_respondents=Count('event__respondent', distinct=True))
         return queryset
 
 
@@ -103,5 +102,3 @@ class HouseholdMemberView(generics.ListAPIView):
             'format': self.format_kwarg,
             'view': self,
         }
-
-
