@@ -43,7 +43,7 @@ class HouseholdMember(models.Model):
     gender_flag = models.IntegerField()
 
     def __str__(self):
-        return str(self.case_id) + '-' + str(self.hhmember_id)
+        return str(self.respondent) + '-' + str(self.hhmember_id)
 
 class Activity(models.Model):
     code = models.CharField(max_length=6)

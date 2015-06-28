@@ -1,7 +1,7 @@
 import csv
 import json
 
-RESPONDENT_SUBSET_SIZE = 100
+RESPONDENT_SUBSET_SIZE = 1000
 FIXTURE_DIR = 'atus_api/fixtures/'
 
 rows = []
@@ -85,7 +85,7 @@ events = []
 event_pk_counter = 0
 respondent_counter = 0
 
-split_length = 3000
+split_length = 100000
 split_num = 1
 
 for row in rows[1:]:
