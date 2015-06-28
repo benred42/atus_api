@@ -85,6 +85,9 @@ events = []
 event_pk_counter = 0
 respondent_counter = 0
 
+split_length = 3000
+split_num = 1
+
 for row in rows[1:]:
     if respondent_counter < RESPONDENT_SUBSET_SIZE:
         respondent_counter += 1
@@ -102,8 +105,15 @@ for row in rows[1:]:
                                "duration": float(duration) * float(tuflwigt),
                            }})
             event_pk_counter += 1
+            # if event_pk_counter % split_length == 0:
+            #     split_count = event_pk_counter // split_length
+            #     filename = FIXTURE_DIR + "events-" + str(split_count) + ".json"
+            #     with open(filename, "w") as outfile:
+            #         outfile.write(json.dumps(events))
+            #     events = []
 
-with open(FIXTURE_DIR + "events-subset.json", "w") as outfile:
+
+with open(FIXTURE_DIR + "events-final.json", "w") as outfile:
     outfile.write(json.dumps(events))
 
 
