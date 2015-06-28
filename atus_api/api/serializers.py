@@ -92,7 +92,7 @@ class RespondentSerializer(serializers.HyperlinkedModelSerializer):
             "activity_totals": reverse('event_list',
                                        kwargs=dict(respondent_id=obj.case_id),
                                        request=self.context.get('request')),
-            "household_members": reverse('hhmembers',
+            "household_members": reverse('hhmembers_list',
                                          kwargs=dict(
                                              respondent_id=obj.case_id),
                                          request=self.context.get('request'))

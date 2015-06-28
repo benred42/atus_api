@@ -86,8 +86,22 @@ class EventView(generics.ListAPIView):
 
 #######################################################################################################################
 
-class HouseholdMemberViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HouseholdMember.objects.all()
+class HouseholdMemberView(generics.ListAPIView):
     serializer_class = HouseholdMemberSerializer
+
+    def get_queryset(self):
+        queryset = HouseholdMember.objects.all().filter(
+            respondent__case_id=self.kwargs['respondent_id'])
+        return queryset
+
+    def get_serializer_context(self):
+        """
+        Extra context provided to the serializer class.
+        """
+        return {
+            'request': self.request,
+            'format': self.format_kwarg,
+            'view': self,
+        }
 
 
