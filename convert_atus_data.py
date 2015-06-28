@@ -2,6 +2,7 @@ import csv
 import json
 
 RESPONDENT_SUBSET_SIZE = 100
+FIXTURE_DIR = 'atus_api/fixtures/'
 
 rows = []
 header = []
@@ -37,7 +38,7 @@ with open("data/atussum_2014.dat") as infile:
                                "code": activity_code[:2]
                            }})
 
-with open("atus_api/fixtures/activities.json", "w") as outfile:
+with open(FIXTURE_DIR + "activities.json", "w") as outfile:
     outfile.write(json.dumps(activities))
 
 print("Converting respondents...")
@@ -76,7 +77,7 @@ for row in demographic_data[:RESPONDENT_SUBSET_SIZE]:
                         "fields": fields_dict,
                         })
 
-with open("atus_api/fixtures/respondents.json", "w") as outfile:
+with open(FIXTURE_DIR + "respondents.json", "w") as outfile:
     outfile.write(json.dumps(respondents))
 
 print("Converting events...")
@@ -102,7 +103,7 @@ for row in rows[1:]:
                            }})
             event_pk_counter += 1
 
-with open("atus_api/fixtures/events-subset.json", "w") as outfile:
+with open(FIXTURE_DIR + "events-subset.json", "w") as outfile:
     outfile.write(json.dumps(events))
 
 
@@ -134,5 +135,5 @@ with open("data/atusrost_2014.dat") as infile:
                               }})
             hhmember_pk_counter += 1
 
-with open("atus_api/fixtures/hhmembers.json", "w") as outfile:
+with open(FIXTURE_DIR + "hhmembers.json", "w") as outfile:
     outfile.write(json.dumps(hhmembers))
