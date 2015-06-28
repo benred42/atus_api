@@ -33,7 +33,7 @@ class Respondent(models.Model):
 
 
 class HouseholdMember(models.Model):
-    case_id = models.ForeignKey(Respondent)
+    respondent = models.ForeignKey(Respondent)
     hhmember_id = models.IntegerField()
     age_edited = models.IntegerField()
     relationship = models.IntegerField()
