@@ -1,6 +1,8 @@
 import csv
 import json
 
+RESPONDENT_SUBSET_SIZE = 20
+FIXTURE_DIR = 'atus_api/heroku_fixtures/'
 
 rows = []
 header = []
@@ -36,9 +38,8 @@ with open("data/atussum_2014.dat") as infile:
                                "code": activity_code[:2]
                            }})
 
-with open("atus_api/heroku_fixtures/activities.json", "w") as outfile:
+with open(FIXTURE_DIR + "activities.json", "w") as outfile:
     outfile.write(json.dumps(activities))
-
 
 print("Converting respondents...")
 demographic_data = [row[0:24] for row in rows[1:]]
@@ -68,7 +69,7 @@ demographic_titles = ['case_id',
                       'childcare_minutes']
 respondents = []
 
-for row in demographic_data[:20]:
+for row in demographic_data[:RESPONDENT_SUBSET_SIZE]:
     fields_dict = {title: row[i] for (i, title) in enumerate(demographic_titles)}
 
     respondents.append({"model": "api.Respondent",
@@ -76,9 +77,8 @@ for row in demographic_data[:20]:
                         "fields": fields_dict,
                         })
 
-with open("atus_api/heroku_fixtures/respondents-heroku.json", "w") as outfile:
+with open(FIXTURE_DIR + "respondents.json", "w") as outfile:
     outfile.write(json.dumps(respondents))
-
 
 print("Converting events...")
 events = []
@@ -86,13 +86,12 @@ event_pk_counter = 0
 respondent_counter = 0
 
 for row in rows[1:]:
-    if respondent_counter < 20:
+    if respondent_counter < RESPONDENT_SUBSET_SIZE:
         respondent_counter += 1
         case_id = row[0]
         tuflwigt = row[1]
         durations = row[24:]
         activities = act_header
-
 
         for i, duration in enumerate(durations):
             events.append({"model": "api.Event",
@@ -104,5 +103,37 @@ for row in rows[1:]:
                            }})
             event_pk_counter += 1
 
-with open("atus_api/heroku_fixtures/events-heroku.json", "w") as outfile:
+with open(FIXTURE_DIR + "events-subset.json", "w") as outfile:
     outfile.write(json.dumps(events))
+
+
+print("Converting hhmembers...")
+with open("data/atusrost_2014.dat") as infile:
+    reader = csv.reader(infile)
+    rows = [row for row in reader]
+    header = rows[0]
+
+    hhmembers = []
+    unique_case_ids = 0
+    hhmember_pk_counter = 0
+
+    for row in rows[1:]:
+        if int(row[1]) == 1:
+            unique_case_ids += 1
+        if unique_case_ids <= RESPONDENT_SUBSET_SIZE:
+            hhmembers.append({"model": "api.HouseholdMember",
+                              "pk": hhmember_pk_counter,
+                              "fields": {
+                                  "case_id": row[0],
+                                  "hhmember_id": row[1],
+                                  "age_edited": row[2],
+                                  "relationship": row[3],
+                                  "gender": row[4],
+                                  "age_flag": row[5],
+                                  "relationship_flag": row[6],
+                                  "gender_flag": row[7],
+                              }})
+            hhmember_pk_counter += 1
+
+with open(FIXTURE_DIR + "hhmembers.json", "w") as outfile:
+    outfile.write(json.dumps(hhmembers))

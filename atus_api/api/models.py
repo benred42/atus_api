@@ -27,9 +27,23 @@ class Respondent(models.Model):
     eldercare_minutes = models.IntegerField(default=0)
     childcare_minutes = models.IntegerField(default=0)
 
-def __str__(self):
+
+    def __str__(self):
         return str(self.case_id)
 
+
+class HouseholdMember(models.Model):
+    respondent = models.ForeignKey(Respondent)
+    hhmember_id = models.IntegerField()
+    age_edited = models.IntegerField()
+    relationship = models.IntegerField()
+    gender = models.IntegerField()
+    age_flag = models.IntegerField()
+    relationship_flag = models.IntegerField()
+    gender_flag = models.IntegerField()
+
+    def __str__(self):
+        return str(self.case_id) + '-' + str(self.hhmember_id)
 
 class Activity(models.Model):
     code = models.CharField(max_length=6)
